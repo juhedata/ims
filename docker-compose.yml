@@ -13,11 +13,11 @@ services:
       - "${MYSQL_PORT:-3306}:3306"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-ims_root_pass}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 5s
       timeout: 5s
       retries: 30
-      start_period: 20s
+      start_period: 30s
 
   backend:
     build: ./backend
