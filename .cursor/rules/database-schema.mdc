@@ -1,0 +1,14 @@
+---
+description: 后端数据库结构以 backend/ims.sql 为准
+alwaysApply: true
+---
+
+# 数据库结构
+
+- **权威结构文件**：`backend/ims.sql`（MySQL 库 `jove_ims` 的表结构转储）
+- 涉及表字段、类型、注释、索引、外键时，先查阅该文件，再改 `backend/app/models/`、Alembic 迁移或相关 API
+- 模型 / 迁移 / SQL 变更后，应与 `ims.sql` 保持一致；不要臆造未在该文件中出现的表或列
+
+## 主要表（概览）
+
+`customer`、`partner`、`partner_group`、`product_category`、`product_sku`、`inventory_item`、`inventory_item_history`、`inventory_item_snapshot`、`inventory_daily_summary`、`inventory_sku_daily_ledger`、`inbound_order` / `inbound_order_item` / `inbound_order_line`、`outbound_order` / `outbound_order_item`、`sys_user`、`sys_audit_log`、`sys_sequence`、`sys_config`、`alembic_version`
