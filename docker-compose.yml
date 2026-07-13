@@ -1,0 +1,63 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ims_root_pass}
+      MYSQL_DATABASE: ${MYSQL_DB:-ims}
+      MYSQL_USER: ${MYSQL_USER:-ims}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ims_pass}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-ims_root_pass}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      APP_NAME: ${APP_NAME:-IMS}
+      DEBUG: ${DEBUG:-false}
+      PORT: 8000
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: ${MYSQL_USER:-ims}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ims_pass}
+      MYSQL_DB: ${MYSQL_DB:-ims}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-please-change-me-in-production}
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-1440}
+      AUTO_MIGRATE: "false"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://127.0.0.1:8080}
+      UPLOAD_DIR: uploads
+      UPLOAD_URL_PREFIX: /uploads
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      ADMIN_NICKNAME: ${ADMIN_NICKNAME:-管理员}
+    volumes:
+      - uploads_data:/app/uploads
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+
+volumes:
+  mysql_data:
+  uploads_data:

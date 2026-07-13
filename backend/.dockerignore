@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+logs/
+uploads/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.idea/
+*.iml
