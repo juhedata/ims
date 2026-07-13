@@ -441,8 +441,8 @@ function buildSavePayload() {
         ElMessage.warning(`${label}：请填写商品单价`)
         return null
       }
-      if (line.unit_price < 0 || line.unit_price > 99999.99) {
-        ElMessage.warning(`${label}：商品单价需在 0 ~ 99999.99 元之间`)
+      if (line.unit_price < 0 || line.unit_price > 9999999.99) {
+        ElMessage.warning(`${label}：商品单价需在 0 ~ 9,999,999.99 元之间`)
         return null
       }
       const sku = getLineSku(line)
@@ -721,7 +721,7 @@ function canDelete(row) { return row.operation_status === 'INITIATED' && !row.su
           <el-input-number v-model="line.quantity" :min="1" :max="1000" style="width:120px; margin:0 8px" @change="onQuantityChange(line)" />
           <div class="price-input">
             <span class="price-symbol">¥</span>
-            <el-input-number v-model="line.unit_price" :min="0" :max="99999.99" :precision="2" :step="1" :controls="false" placeholder="99.00" />
+            <el-input-number v-model="line.unit_price" :min="0" :max="9999999.99" :precision="2" :step="1" :controls="false" placeholder="99.00" />
           </div>
           <div style="flex:1; position:relative">
             <el-input

@@ -7,7 +7,7 @@ from app.models.enums import InboundMode, StockCondition
 class InboundLineCreate(BaseModel):
     sku_id: int
     quantity: int = Field(..., ge=1)
-    unit_price: Decimal | None = Field(None, ge=0, le=99999.99, max_digits=12, decimal_places=2, description="采购单价")
+    unit_price: Decimal | None = Field(None, ge=0, le=9999999.99, max_digits=12, decimal_places=2, description="采购单价")
     item_sns: list[str] | None = Field(None, description="人工录入 SN 列表，数量须与 quantity 一致")
 
 

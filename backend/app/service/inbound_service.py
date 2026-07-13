@@ -96,8 +96,8 @@ def _build_procurement_items(db: Session, order: InboundOrder, lines_data: list[
 
         if line_data.unit_price is None:
             raise ValueError(f"SKU [{sku.name}] 缺少商品单价")
-        if line_data.unit_price < 0 or line_data.unit_price > Decimal("99999.99"):
-            raise ValueError(f"SKU [{sku.name}] 的商品单价须在 0 ~ 99999.99 元之间")
+        if line_data.unit_price < 0 or line_data.unit_price > Decimal("9999999.99"):
+            raise ValueError(f"SKU [{sku.name}] 的商品单价须在 0 ~ 9,999,999.99 元之间")
 
         line = InboundOrderLine(
             inbound_order_id=order.id,
